@@ -1,0 +1,269 @@
+/* ═══════════════════════════════════════════════════════════════
+   GLITCH MATRIX — GLITCH & CINEMATIC SHADER ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* 1. Stepped Clip-Path Headline Glitch (Active Theory / Cyberpunk 2077) */
+.glitch-title {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text);
+}
+
+.glitch-title::before,
+.glitch-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.glitch-title::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--cyan);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-step-1 3s infinite linear alternate-reverse;
+}
+
+.glitch-title::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--magenta);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-step-2 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-step-1 {
+  0% { clip-path: inset(40% 0 61% 0); }
+  20% { clip-path: inset(92% 0 1% 0); }
+  40% { clip-path: inset(10% 0 78% 0); }
+  60% { clip-path: inset(65% 0 20% 0); }
+  80% { clip-path: inset(2% 0 85% 0); }
+  100% { clip-path: inset(50% 0 30% 0); }
+}
+
+@keyframes glitch-step-2 {
+  0% { clip-path: inset(25% 0 58% 0); }
+  20% { clip-path: inset(54% 0 32% 0); }
+  40% { clip-path: inset(80% 0 5% 0); }
+  60% { clip-path: inset(15% 0 70% 0); }
+  80% { clip-path: inset(72% 0 18% 0); }
+  100% { clip-path: inset(35% 0 45% 0); }
+}
+
+/* 2. CRT Power-On Sequence */
+.crt-intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  transition: opacity 0.5s ease-out;
+}
+
+.crt-beam {
+  position: absolute;
+  background: #fff;
+  box-shadow: 0 0 15px #00e5ff, 0 0 30px #00e5ff;
+}
+
+/* Stage 1: Cyan dot (0.4s) */
+.crt-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan);
+}
+
+/* Stage 2: Expanding Horizontal Line (0.4s) */
+.crt-beam-line {
+  width: 0%;
+  height: 2px;
+  animation: crtLineOpen 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+@keyframes crtLineOpen {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* Stage 3: Vertical Unfurl (0.6s) */
+.crt-expand-canvas {
+  animation: crtUnfurl 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes crtUnfurl {
+  0% { transform: scaleY(0.005); }
+  100% { transform: scaleY(1); }
+}
+
+/* 3. CRT Outro / Collapse (0.8s) */
+.crt-collapse-active {
+  animation: crtTurnOff 0.75s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes crtTurnOff {
+  0% {
+    transform: scale(1, 1);
+    filter: brightness(1);
+  }
+  45% {
+    transform: scale(1, 0.004);
+    filter: brightness(2.5);
+  }
+  85% {
+    transform: scale(0.004, 0.004);
+    filter: brightness(4);
+  }
+  100% {
+    transform: scale(0, 0);
+    filter: brightness(0);
+  }
+}
+
+/* 4. Violent Screen Shake & Red Flash on Damage */
+.shake-screen {
+  animation: screenShakeAnim 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes screenShakeAnim {
+  10%, 90% { transform: translate3d(-3px, 2px, 0) rotate(-0.5deg); }
+  20%, 80% { transform: translate3d(4px, -3px, 0) rotate(0.8deg); }
+  30%, 50%, 70% { transform: translate3d(-5px, 4px, 0) rotate(-1deg); }
+  40%, 60% { transform: translate3d(5px, -2px, 0) rotate(0.5deg); }
+}
+
+.damage-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 35%, rgba(255, 59, 48, 0.5) 90%, rgba(255, 59, 48, 0.85) 100%);
+  opacity: 0;
+  transition: opacity 0.08s ease-in;
+}
+
+.damage-vignette.active {
+  opacity: 1;
+  animation: damagePulse 0.45s ease-out forwards;
+}
+
+@keyframes damagePulse {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* 5. Identified Green Stamp Animation (Module 7) */
+.stamp-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(2) rotate(-15deg);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+  border: 4px solid var(--lime);
+  color: var(--lime);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2.2rem;
+  letter-spacing: 0.15em;
+  padding: 8px 24px;
+  background: rgba(10, 24, 14, 0.85);
+  box-shadow: 0 0 25px rgba(124, 255, 61, 0.6);
+  text-shadow: 0 0 10px var(--lime);
+}
+
+.stamp-active {
+  animation: stampSlam 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes stampSlam {
+  0% {
+    transform: translate(-50%, -50%) scale(2.8) rotate(-25deg);
+    opacity: 0;
+  }
+  65% {
+    transform: translate(-50%, -50%) scale(0.95) rotate(-12deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(-14deg);
+    opacity: 1;
+  }
+}
+
+/* 6. Custom Cyberpunk Cursor */
+#custom-cursor-core {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--cyan);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  transition: width 0.15s ease-out, height 0.15s ease-out, border-color 0.15s, background 0.15s, transform 0.05s linear;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+#custom-cursor-core::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+#custom-cursor-core.hovered {
+  width: 34px;
+  height: 34px;
+  border-color: var(--magenta);
+  box-shadow: 0 0 16px rgba(255, 45, 149, 0.6);
+  border-radius: 50%;
+}
+
+#custom-cursor-core.hovered::before {
+  background: var(--magenta);
+}
+
+#custom-cursor-core.snapped {
+  width: 12px;
+  height: 12px;
+  border-color: var(--lime);
+  background: rgba(124, 255, 61, 0.3);
+}
+
+.cursor-trail-dot {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: var(--cyan);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: calc(var(--z-cursor) - 1);
+  transform: translate(-50%, -50%);
+  opacity: 0.6;
+  transition: opacity 0.3s ease-out;
+}
+
+@media (pointer: coarse), (hover: none) {
+  #custom-cursor-core, .cursor-trail-dot {
+    display: none !important;
+  }
+}
