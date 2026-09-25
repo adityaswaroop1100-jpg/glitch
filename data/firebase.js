@@ -152,10 +152,25 @@
 
     if (isReady()) {
       try {
-        // Use reg_number as document ID for idempotency and easy lookups
+        // 1. Save full registration profile to private participants vault
         const docRef = firestoreDb.collection('participants').doc(cleanReg);
         await docRef.set(participantRecord, { merge: true });
-        console.log('[Firebase] Participant document synced:', cleanReg);
+        console.log('[Firebase] Participant vault record synced:', cleanReg);
+
+        // 2. Initialize entry in sanitized public leaderboard (NO phone, NO email)
+        const lbRef = firestoreDb.collection('leaderboard').doc(cleanReg);
+        await lbRef.set({
+          name: participantRecord.name,
+          reg_number: cleanReg,
+          score: 0,
+          question_score: 0,
+          time_bonus: 0,
+          modules_cleared: 0,
+          time_taken: 0,
+          status: 'LOGGED_IN',
+          updated_at: timestamp
+        }, { merge: true });
+
         return { success: true, firestore: true, data: participantRecord };
       } catch (err) {
         console.warn('[Firebase] Firestore write error:', err.message);
@@ -199,6 +214,7 @@
       localStorage.setItem('glitchmatrix_user', JSON.stringify(user));
 
       if (isReady() && user.reg_number) {
+        // 1. Update private participant vault record
         const docRef = firestoreDb.collection('participants').doc(user.reg_number);
         await docRef.set({
           name: user.name || 'Anonymous Operative',
@@ -215,6 +231,22 @@
           completed_at: user.completed_at,
           updated_at: user.updated_at
         }, { merge: true });
+
+        // 2. Update sanitized public leaderboard (NO email, NO phone)
+        const lbRef = firestoreDb.collection('leaderboard').doc(user.reg_number);
+        await lbRef.set({
+          name: user.name || 'Anonymous Operative',
+          reg_number: user.reg_number,
+          score: safeScore,
+          question_score: questionScore,
+          time_bonus: timeBonus,
+          modules_cleared: modulesCleared,
+          time_taken: timeTaken,
+          status: user.status,
+          completed_at: user.completed_at,
+          updated_at: user.updated_at
+        }, { merge: true });
+
         console.log('[Firebase] Telemetry saved to Firestore for:', user.reg_number, 'Points:', safeScore, `(${questionScore} Q + ${timeBonus} Time)`);
       }
     } catch (err) {
@@ -225,13 +257,14 @@
   /**
    * Fetch Live Operative Leaderboard from Firestore
    * Sorted primarily by Total Score (DESC), secondarily by Time Taken (ASC)
+   * Guaranteed ZERO PII (no phone, no email)
    * @param {number} limitCount
    * @returns {Promise<Object>}
    */
   async function getLeaderboard(limitCount = 50) {
     if (isReady()) {
       try {
-        const snap = await firestoreDb.collection('participants')
+        const snap = await firestoreDb.collection('leaderboard')
           .orderBy('score', 'desc')
           .limit(limitCount)
           .get();
@@ -240,7 +273,17 @@
         snap.forEach(doc => {
           const d = doc.data();
           if (d && d.name && d.reg_number) {
-            list.push(d);
+            list.push({
+              name: d.name,
+              reg_number: d.reg_number,
+              score: d.score !== undefined ? d.score : 0,
+              question_score: d.question_score !== undefined ? d.question_score : (d.score || 0),
+              time_bonus: d.time_bonus !== undefined ? d.time_bonus : 0,
+              modules_cleared: d.modules_cleared !== undefined ? d.modules_cleared : 0,
+              time_taken: d.time_taken !== undefined ? d.time_taken : 0,
+              status: d.status || 'SIGNAL_LOST',
+              completed_at: d.completed_at || d.updated_at || ''
+            });
           }
         });
 

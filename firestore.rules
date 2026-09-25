@@ -1,8 +1,41 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
+
+    // 1. PARTICIPANTS VAULT (Private Registration Records: name, reg_number, email, phone)
+    // - Read: DENIED to all public web clients (prevents scraping emails and phone numbers).
+    // - Write/Update: Permitted only for valid registration and score updates matching reg_number.
+    // - Delete: DENIED to prevent accidental or malicious data loss.
+    match /participants/{regNumber} {
+      allow create, update: if request.resource.data.reg_number == regNumber
+                            && request.resource.data.score >= 0
+                            && request.resource.data.score <= 25;
+      allow read: if false;
+      allow delete: if false;
+    }
+
+    // 2. LEADERBOARD (Sanitized Public Gaming Telemetry: rank, scores, time taken)
+    // - Read: ALLOWED publicly for live in-game leaderboard.
+    // - Write/Update: Allowed only for valid scores (0-25) and STRICTLY PROHIBITS PII (email/phone).
+    // - Delete: DENIED to protect score rankings from tampering.
+    match /leaderboard/{regNumber} {
+      allow read: if true;
+      allow create, update: if request.resource.data.reg_number == regNumber
+                            && request.resource.data.score >= 0
+                            && request.resource.data.score <= 25
+                            && !('phone' in request.resource.data)
+                            && !('email' in request.resource.data);
+      allow delete: if false;
+    }
+
+    // 3. HEALTH CHECK (Diagnostic ping endpoint)
+    match /_health_check/{docId} {
       allow read, write: if true;
+    }
+
+    // Default fallback: deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
