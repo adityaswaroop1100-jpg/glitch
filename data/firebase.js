@@ -133,10 +133,12 @@
   async function registerParticipant(details) {
     const timestamp = new Date().toISOString();
     const cleanReg = (details.reg_number || '').trim().toUpperCase();
+    const cleanAaruush = (details.aaruush_id || '').trim().toUpperCase();
 
     const participantRecord = {
       name: (details.name || '').trim(),
       reg_number: cleanReg,
+      aaruush_id: cleanAaruush || 'N/A',
       email: (details.email || '').trim().toLowerCase(),
       phone: (details.phone || '').trim(),
       score: 0,
@@ -155,13 +157,14 @@
         // 1. Save full registration profile to private participants vault
         const docRef = firestoreDb.collection('participants').doc(cleanReg);
         await docRef.set(participantRecord, { merge: true });
-        console.log('[Firebase] Participant vault record synced:', cleanReg);
+        console.log('[Firebase] Participant vault record synced:', cleanReg, cleanAaruush ? `(Aaruush: ${cleanAaruush})` : '');
 
         // 2. Initialize entry in sanitized public leaderboard (NO phone, NO email)
         const lbRef = firestoreDb.collection('leaderboard').doc(cleanReg);
         await lbRef.set({
           name: participantRecord.name,
           reg_number: cleanReg,
+          aaruush_id: cleanAaruush || '',
           score: 0,
           question_score: 0,
           time_bonus: 0,
@@ -219,6 +222,7 @@
         await docRef.set({
           name: user.name || 'Anonymous Operative',
           reg_number: user.reg_number,
+          aaruush_id: user.aaruush_id || '',
           email: user.email || '',
           phone: user.phone || '',
           score: safeScore,
@@ -237,6 +241,7 @@
         await lbRef.set({
           name: user.name || 'Anonymous Operative',
           reg_number: user.reg_number,
+          aaruush_id: user.aaruush_id || '',
           score: safeScore,
           question_score: questionScore,
           time_bonus: timeBonus,
@@ -276,6 +281,7 @@
             list.push({
               name: d.name,
               reg_number: d.reg_number,
+              aaruush_id: d.aaruush_id || '',
               score: d.score !== undefined ? d.score : 0,
               question_score: d.question_score !== undefined ? d.question_score : (d.score || 0),
               time_bonus: d.time_bonus !== undefined ? d.time_bonus : 0,
