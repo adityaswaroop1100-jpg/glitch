@@ -538,6 +538,14 @@ function renderOddOneOut(mod, q, container) {
   window.G.oddTimeLeft = 8;
   const circumference = 2 * Math.PI * 46;
 
+  // Shuffle display items so the outlier isn't always in the same position
+  const displayItems = [...q.items];
+  for (let i = displayItems.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [displayItems[i], displayItems[j]] = [displayItems[j], displayItems[i]];
+  }
+  window.G.currentOddItems = displayItems;
+
   container.innerHTML = `
     <div class="challenge-prompt-header">
       <div class="prompt-tag">// RAPID OUTLIER EXPULSION (8.00s LIMIT)</div>
@@ -559,8 +567,8 @@ function renderOddOneOut(mod, q, container) {
     </div>` : ''}
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;" id="odd-options-grid">
-      ${q.items.map((item, i) => `
-        <button class="circuit-chip-btn option-btn" id="odd-btn-${i}" onclick="window.handleOddSelection(this, ${i})">
+      ${displayItems.map((item, i) => `
+        <button class="circuit-chip-btn option-btn" id="odd-btn-${i}" data-val="${item.replace(/"/g, '&quot;')}" onclick="window.handleOddSelection(this, ${i})">
           [${i+1}] ${item}
         </button>
       `).join('')}
@@ -598,10 +606,16 @@ function renderOddOneOut(mod, q, container) {
       window.G.oddTimer = null;
       if (!window.G.answerLocked) {
         window.G.answerLocked = true;
-        const correctBtn = document.getElementById('odd-btn-' + q.answer);
-        if (correctBtn) correctBtn.classList.add('success');
+        const normAns = String(q.answer).trim().toLowerCase();
+        const allBtns = document.querySelectorAll('#odd-options-grid .circuit-chip-btn');
+        allBtns.forEach(b => {
+          b.style.pointerEvents = 'none';
+          if (String(b.getAttribute('data-val')).trim().toLowerCase() === normAns) {
+            b.classList.add('success');
+          }
+        });
         window.onWrongAnswer();
-        window.showFeedback("TIME EXPIRED — ADVANCING TO NEXT", false);
+        window.showFeedback("TIME EXPIRED (" + q.answer + ") — ADVANCING TO NEXT", false);
         setTimeout(window.advanceQuestion, 1200);
       }
     }
@@ -614,7 +628,20 @@ window.handleOddSelection = function(btn, idx) {
   if (window.G.oddTimer) { clearInterval(window.G.oddTimer); window.G.oddTimer = null; }
 
   const q = window.getCurrentQuestion();
-  const correct = idx === q.answer;
+  const currentItems = window.G.currentOddItems || q.items;
+  const selectedItem = btn.getAttribute('data-val') || currentItems[idx];
+  const normAns = String(q.answer).trim().toLowerCase();
+  const normSelected = String(selectedItem).trim().toLowerCase();
+  const correct = normSelected === normAns || (typeof q.answer === 'number' && idx === q.answer);
+
+  // Freeze all buttons & highlight correct answer
+  const allBtns = document.querySelectorAll('#odd-options-grid .circuit-chip-btn');
+  allBtns.forEach(b => {
+    b.style.pointerEvents = 'none';
+    if (String(b.getAttribute('data-val')).trim().toLowerCase() === normAns) {
+      b.classList.add('success');
+    }
+  });
 
   if (correct) {
     btn.classList.add('success');
@@ -623,10 +650,8 @@ window.handleOddSelection = function(btn, idx) {
     setTimeout(window.advanceQuestion, 1200);
   } else {
     btn.classList.add('danger');
-    const correctBtn = document.getElementById('odd-btn-' + q.answer);
-    if (correctBtn) correctBtn.classList.add('success');
     window.onWrongAnswer();
-    window.showFeedback("INCORRECT — ADVANCING TO NEXT", false);
+    window.showFeedback("INCORRECT (" + q.answer + ") — ADVANCING TO NEXT", false);
     setTimeout(window.advanceQuestion, 1200);
   }
 };
