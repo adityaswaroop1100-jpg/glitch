@@ -26,14 +26,14 @@
 
 .glitch-title::before {
   left: 2px;
-  text-shadow: -2px 0 var(--cyan);
+  text-shadow: -2px 0 var(--matrix-green), 0 0 10px rgba(0, 255, 65, 0.4);
   clip: rect(24px, 550px, 90px, 0);
   animation: glitch-step-1 3s infinite linear alternate-reverse;
 }
 
 .glitch-title::after {
   left: -2px;
-  text-shadow: -2px 0 var(--magenta);
+  text-shadow: 2px 0 var(--red), 0 0 8px rgba(255, 0, 51, 0.3);
   clip: rect(85px, 550px, 140px, 0);
   animation: glitch-step-2 2.5s infinite linear alternate-reverse;
 }
@@ -60,7 +60,7 @@
 .crt-intro-overlay {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: #020502;
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -72,16 +72,16 @@
 .crt-beam {
   position: absolute;
   background: #fff;
-  box-shadow: 0 0 15px #00e5ff, 0 0 30px #00e5ff;
+  box-shadow: 0 0 15px #00ff41, 0 0 30px #00ff41;
 }
 
-/* Stage 1: Cyan dot (0.4s) */
+/* Stage 1: Phosphor green dot (0.4s) */
 .crt-dot {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 16px var(--cyan);
+  background: var(--matrix-green);
+  box-shadow: 0 0 20px var(--matrix-green);
 }
 
 /* Stage 2: Expanding Horizontal Line (0.4s) */

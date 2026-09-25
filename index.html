@@ -463,7 +463,7 @@
   <div class="corner-hud-bracket corner-top-left">
     <div class="rec-indicator">
       <div class="rec-dot"></div>
-      <span>REC</span>
+      <span>NEBUCHADNEZZAR</span>
     </div>
     <span class="hud-timecode" id="hud-rec-timecode">00:00:00:00</span>
   </div>
@@ -471,18 +471,18 @@
   <div class="corner-hud-bracket corner-top-right">
     <span class="hud-chip cyan" id="hud-cpu">CPU 34%</span>
     <span class="hud-chip" id="hud-mem">MEM 412MB</span>
-    <span class="hud-chip lime">SYS_NOMINAL</span>
+    <span class="hud-chip lime">MATRIX_LINKED</span>
   </div>
 
   <div class="corner-hud-bracket corner-bottom-left">
-    <span style="color:var(--text-dim);">TERMINAL //</span>
-    <span style="color:var(--cyan);font-weight:700;" id="hud-session-code">SESSION_0x8F4A</span>
-    <span class="hud-chip">v2.4.7-PROD</span>
+    <span style="color:var(--text-dim);">BROADCAST //</span>
+    <span style="color:var(--cyan);font-weight:700;" id="hud-session-code">ZION_0x8F4A</span>
+    <span class="hud-chip">v3.1-MATRIX</span>
   </div>
 
   <div class="corner-hud-bracket corner-bottom-right">
     <canvas id="hud-waveform"></canvas>
-    <button class="hud-chip" id="btn-toggle-audio" onclick="toggleMuteAudio()" style="pointer-events:all;cursor:pointer;background:rgba(26,35,50,0.8);border:1px solid var(--line-bright);color:var(--cyan);">
+    <button class="hud-chip" id="btn-toggle-audio" onclick="toggleMuteAudio()" style="pointer-events:all;cursor:pointer;background:rgba(2,12,4,0.85);border:1px solid var(--line-bright);color:var(--cyan);">
       <span id="mute-label">🔊 AUDIO ON</span>
     </button>
   </div>
@@ -532,7 +532,7 @@
       <div class="hud-zone-group">
         <div class="hud-live-tag">
           <div class="live-beacon"></div>
-          <span>MAINFRAME // PROTOCOL</span>
+          <span>THE MATRIX // PROTOCOL</span>
         </div>
 
         <div class="hud-divider"></div>
@@ -579,32 +579,32 @@
 
     <!-- 0. OPERATIVE REGISTRATION / LOGIN SCREEN -->
     <main class="screen active" id="login-screen" style="align-items:center;justify-content:center;text-align:center;">
-      <div style="width:100%;max-width:520px;margin:0 auto;background:rgba(10,14,23,0.88);border:1px solid var(--line);border-radius:4px;padding:30px 28px;box-shadow:0 0 50px rgba(0,0,0,0.85);backdrop-filter:blur(14px);position:relative;">
+      <div style="width:100%;max-width:520px;margin:0 auto;background:rgba(2,10,3,0.92);border:1px solid var(--line);border-radius:4px;padding:30px 28px;box-shadow:0 0 50px rgba(0,0,0,0.85);backdrop-filter:blur(14px);position:relative;">
         <div class="corner-bracket bracket-tl"></div>
         <div class="corner-bracket bracket-tr"></div>
         <div class="corner-bracket bracket-bl"></div>
         <div class="corner-bracket bracket-br"></div>
 
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:8px;">
-          <span class="prompt-tag" style="margin:0;font-size:0.7rem;">// OPERATIVE IDENTITY REGISTRATION</span>
+          <span class="prompt-tag" style="margin:0;font-size:0.7rem;">// MATRIX RESISTANCE // IDENTITY PROTOCOL</span>
           <div style="display:flex;gap:12px;align-items:center;">
             <button type="button" onclick="toggleLeaderboardModal()" style="background:transparent;border:none;color:var(--lime);cursor:pointer;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.05em;display:flex;align-items:center;gap:4px;" title="View Live Global Leaderboard">🏆 LEADERBOARD</button>
             <button type="button" onclick="toggleFirebaseSettings()" style="background:transparent;border:none;color:var(--cyan);cursor:pointer;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.05em;" title="Configure Firebase Database">⚙️ DB CONFIG</button>
           </div>
         </div>
 
-        <h2 class="glitch-title" data-text="MAINFRAME LOGIN" style="font-size:1.75rem;margin-bottom:4px;color:var(--cyan);">
-          MAINFRAME ACCESS
+        <h2 class="glitch-title" data-text="ENTER THE MATRIX" style="font-size:1.75rem;margin-bottom:4px;color:var(--cyan);">
+          ENTER THE MATRIX
         </h2>
         <p style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-bottom:18px;">
-          Register operative credentials. Data syncs directly to Firebase Cloud Firestore telemetry.
+          Register operative credentials. Uplink directly to Nebuchadnezzar broadcast mainframe.
         </p>
 
         <!-- Login Form -->
         <form id="operative-login-form" onsubmit="handleOperativeLogin(event)" style="display:flex;flex-direction:column;gap:13px;text-align:left;">
           <div>
             <label class="hud-label" style="display:block;margin-bottom:4px;">PARTICIPANT NAME *</label>
-            <input type="text" id="login-name" required placeholder="e.g. Aditya Swaroop" class="login-cyber-input" autocomplete="name" />
+            <input type="text" id="login-name" required placeholder="e.g. Thomas Anderson / Neo" class="login-cyber-input" autocomplete="name" />
           </div>
 
           <div>
@@ -614,7 +614,7 @@
 
           <div>
             <label class="hud-label" style="display:block;margin-bottom:4px;">GMAIL / EMAIL ADDRESS *</label>
-            <input type="email" id="login-email" required placeholder="e.g. operative@gmail.com" class="login-cyber-input" autocomplete="email" />
+            <input type="email" id="login-email" required placeholder="e.g. operative@zion.net" class="login-cyber-input" autocomplete="email" />
           </div>
 
           <div>
@@ -626,7 +626,7 @@
           <div id="login-success-msg" style="display:none;font-family:var(--font-mono);font-size:0.75rem;color:var(--lime);background:rgba(124,255,61,0.12);border:1px solid var(--lime);padding:8px 12px;border-radius:2px;"></div>
 
           <button type="submit" id="btn-login-submit" class="btn-cyber primary" style="padding:14px;font-size:0.95rem;margin-top:6px;justify-content:center;letter-spacing:0.12em;">
-            [ > VERIFY IDENTITY & ENTER MAINFRAME < ]
+            [ > JACK IN TO THE MATRIX < ]
           </button>
         </form>
 
@@ -664,14 +664,14 @@
     <main class="screen" id="intro-screen" style="align-items:center;justify-content:center;text-align:center;">
       <div style="max-width:760px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px;">
         
-        <div class="prompt-tag" id="intro-signal-badge" style="letter-spacing:0.2em;">// INITIALIZING QUANTUM LINK...</div>
+        <div class="prompt-tag" id="intro-signal-badge" style="letter-spacing:0.2em;">// WAKE UP, NEO... INITIALIZING OPERATIVE LINK...</div>
         
-        <h1 class="glitch-title" id="intro-main-title" data-text="GLITCH MATRIX" style="font-size:clamp(2.8rem,7vw,5.5rem);margin-bottom:6px;">
-          GLITCH MATRIX
+        <h1 class="glitch-title" id="intro-main-title" data-text="GLITCH // THE MATRIX" style="font-size:clamp(2.8rem,7vw,5.5rem);margin-bottom:6px;">
+          GLITCH // THE MATRIX
         </h1>
 
-        <div style="font-family:var(--font-mono);font-size:0.85rem;color:var(--magenta);background:rgba(255,45,149,0.08);border:1px solid rgba(255,45,149,0.3);padding:6px 18px;border-radius:2px;">
-          ⚠ SYSTEM THREAT LEVEL: CRITICAL // 7 DATA SECTORS COMPROMISED
+        <div style="font-family:var(--font-mono);font-size:0.85rem;color:var(--red);background:rgba(255,0,51,0.08);border:1px solid rgba(255,0,51,0.3);padding:6px 18px;border-radius:2px;">
+          ⚠ AGENT INTRUSION DETECTED // 7 CODE SECTORS CORRUPTED BY SENTINELS
         </div>
 
         <!-- Manifest Grid -->
@@ -682,7 +682,7 @@
           </div>
           <div style="background:var(--bg-card);border:1px solid var(--line);padding:14px;border-radius:3px;">
             <div class="hud-label">DIRECTIVE</div>
-            <div style="color:var(--lime);font-family:var(--font-mono);font-weight:700;font-size:0.95rem;margin-top:4px;">RESTORE INTEGRITY</div>
+            <div style="color:var(--lime);font-family:var(--font-mono);font-weight:700;font-size:0.95rem;margin-top:4px;">RESTORE REALITY</div>
           </div>
           <div style="background:var(--bg-card);border:1px solid var(--line);padding:14px;border-radius:3px;">
             <div class="hud-label">REPAIR WINDOW</div>
@@ -696,10 +696,10 @@
 
         <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
           <button class="btn-cyber primary" id="jack-in-btn" onclick="startBootSequence()" style="font-size:1.15rem;padding:18px 48px;letter-spacing:0.15em;">
-            [ JACK IN TO MAINFRAME ]
+            [ > TAKE THE RED PILL: JACK IN < ]
           </button>
           <button type="button" class="btn-cyber" onclick="toggleLeaderboardModal()" style="font-size:1.0rem;padding:18px 28px;letter-spacing:0.12em;color:var(--lime);">
-            [ 🏆 LEADERBOARD ]
+            [ 🏆 ZION LEADERBOARD ]
           </button>
         </div>
 
@@ -786,9 +786,9 @@
     <!-- 4. FINAL OUTRO CINEMATIC SCREEN -->
     <div class="screen" id="final-screen" style="align-items:center;justify-content:center;text-align:center;">
       <div style="max-width:680px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:24px;">
-        <div class="prompt-tag">// ALL 7 MODULES RESTORED</div>
-        <h1 class="glitch-title" style="font-size:clamp(2rem,5vw,3.8rem);color:var(--lime);" data-text="MAINFRAME STABILIZED">
-          MAINFRAME STABILIZED
+        <div class="prompt-tag">// MATRIX CODE STABILIZED // OPERATIVE EXTRACTED</div>
+        <h1 class="glitch-title" style="font-size:clamp(2rem,5vw,3.8rem);color:var(--lime);" data-text="THE MATRIX RESTORED">
+          THE MATRIX RESTORED
         </h1>
 
         <!-- 20-Block Segmented Loader -->
@@ -803,15 +803,15 @@
         <!-- Debrief Card -->
         <div id="final-debrief-card" style="display:none;width:100%;max-width:540px;background:var(--bg-card);border:1px solid var(--line);border-radius:4px;padding:24px;text-align:left;">
           <div style="font-family:var(--font-display);font-size:0.9rem;font-weight:800;color:var(--cyan);letter-spacing:0.12em;margin-bottom:16px;border-bottom:1px solid var(--line);padding-bottom:8px;">
-            OPERATIVE PERFORMANCE DEBRIEF
+            ZION OPERATIVE PERFORMANCE DEBRIEF
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;font-family:var(--font-mono);font-size:0.85rem;">
             <div><span style="color:var(--text-dim);">OPERATIVE ID:</span> <span id="stat-pid" style="color:var(--text);font-weight:700;">AGENT_77</span></div>
             <div><span style="color:var(--text-dim);">MODULES:</span> <span style="color:var(--lime);font-weight:700;">7 / 7 RESTORED</span></div>
             <div><span style="color:var(--text-dim);">QUESTIONS SOLVED:</span> <span id="stat-q-score" style="color:var(--lime);font-weight:700;">0 / 21 PTS</span></div>
             <div><span style="color:var(--text-dim);">SPEED FINISH BONUS:</span> <span id="stat-time-bonus" style="color:var(--amber);font-weight:700;">+0 / 4 PTS</span></div>
-            <div style="grid-column:span 2;background:rgba(0,229,255,0.08);padding:10px 14px;border:1px solid var(--cyan);border-radius:3px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="color:var(--cyan);font-weight:700;font-size:0.85rem;">TOTAL MAINFRAME SCORE:</span>
+            <div style="grid-column:span 2;background:rgba(0,255,65,0.08);padding:10px 14px;border:1px solid var(--cyan);border-radius:3px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="color:var(--cyan);font-weight:700;font-size:0.85rem;">TOTAL MATRIX SCORE:</span>
               <span id="stat-score" style="color:var(--cyan);font-weight:800;font-size:1.25rem;">0 / 25 PTS</span>
             </div>
             <div><span style="color:var(--text-dim);">TIME REMAINING:</span> <span id="stat-time" style="color:var(--text);font-weight:700;">0:00</span></div>
@@ -822,21 +822,21 @@
             <div id="stat-badges" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
           </div>
           <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);display:flex;justify-content:space-between;">
-            <span>MAINFRAME ALL-TIME BEST:</span>
+            <span>ZION ALL-TIME BEST:</span>
             <span id="stat-best" style="color:var(--cyan);font-weight:700;">0 / 25 PTS</span>
           </div>
         </div>
 
-        <div id="final-survived-text" style="display:none;font-family:var(--font-display);font-size:1.4rem;color:var(--text);letter-spacing:0.1em;">
-          You survived the glitch.
+        <div id="final-survived-text" style="display:none;font-family:var(--font-display);font-size:1.25rem;color:var(--lime);letter-spacing:0.08em;line-height:1.5;">
+          "You took the red pill. You saw through the code. Reality is secured."
         </div>
 
         <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;justify-content:center;">
           <button class="btn-cyber success" onclick="restartGame()" style="padding:14px 28px;">
-            [ PLAY AGAIN ]
+            [ > RE-ENTER THE MATRIX < ]
           </button>
           <button type="button" class="btn-cyber" onclick="toggleLeaderboardModal()" style="padding:14px 28px;color:var(--lime);">
-            [ 🏆 LEADERBOARD ]
+            [ 🏆 ZION LEADERBOARD ]
           </button>
           <button class="btn-cyber" onclick="shareResults()" style="padding:14px 24px;">
             [ SHARE RESULT ]
@@ -848,12 +848,12 @@
     <!-- 5. GAME OVER SCREEN -->
     <div class="screen" id="gameover-screen" style="align-items:center;justify-content:center;text-align:center;">
       <div style="max-width:540px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px;">
-        <div class="prompt-tag" style="color:var(--red);">// SYSTEM INTEGRITY COLLAPSED</div>
-        <h1 class="glitch-title" style="font-size:3.6rem;color:var(--red);" data-text="SYSTEM LOST">
-          SYSTEM LOST
+        <div class="prompt-tag" style="color:var(--red);">// NEURAL BROADCAST SEVERED</div>
+        <h1 class="glitch-title" style="font-size:3.6rem;color:var(--red);" data-text="NEURAL LINK LOST">
+          NEURAL LINK LOST
         </h1>
         <p style="font-family:var(--font-mono);color:var(--text-dim);font-size:0.88rem;">
-          CRITICAL HARDWARE FAILURE OR SURVIVAL WINDOW EXPIRED
+          SENTINEL BREACH DETECTED // OPERATIVE DISCONNECTED FROM THE MATRIX
         </p>
 
         <div style="width:100%;background:var(--bg-card);border:1px solid var(--line);border-radius:4px;padding:24px;text-align:left;font-family:var(--font-mono);font-size:0.85rem;">
@@ -865,10 +865,10 @@
 
         <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
           <button class="btn-cyber danger" onclick="restartGame()" style="font-size:1.05rem;padding:16px 36px;">
-            [ REBOOT SYSTEM & RETRY ]
+            [ > RE-ENTER THE MATRIX < ]
           </button>
           <button type="button" class="btn-cyber" onclick="toggleLeaderboardModal()" style="font-size:1.05rem;padding:16px 28px;color:var(--lime);">
-            [ 🏆 LEADERBOARD ]
+            [ 🏆 ZION LEADERBOARD ]
           </button>
         </div>
       </div>
@@ -882,20 +882,20 @@
   <div id="firewall-fx-mount"></div>
 
   <!-- MAINFRAME OPERATIVE LEADERBOARD MODAL -->
-  <div id="leaderboard-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(3,7,13,0.88);backdrop-filter:blur(18px);z-index:99999;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;">
-    <div style="width:100%;max-width:820px;max-height:90vh;background:#050912;border:1px solid var(--cyan);border-radius:4px;box-shadow:0 0 50px rgba(0,229,255,0.22);display:flex;flex-direction:column;position:relative;overflow:hidden;">
+  <div id="leaderboard-modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(2,10,3,0.92);backdrop-filter:blur(18px);z-index:99999;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;">
+    <div style="width:100%;max-width:820px;max-height:90vh;background:#030a04;border:1px solid var(--cyan);border-radius:4px;box-shadow:0 0 50px rgba(0,255,65,0.25);display:flex;flex-direction:column;position:relative;overflow:hidden;">
       <div class="corner-bracket bracket-tl"></div>
       <div class="corner-bracket bracket-tr"></div>
       <div class="corner-bracket bracket-bl"></div>
       <div class="corner-bracket bracket-br"></div>
 
       <!-- Header -->
-      <div style="padding:16px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:rgba(0,229,255,0.04);">
+      <div style="padding:16px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:rgba(0,255,65,0.05);">
         <div>
-          <div class="prompt-tag" style="margin:0;font-size:0.65rem;letter-spacing:0.2em;">// FIRESTORE LIVE CLOUD TELEMETRY</div>
+          <div class="prompt-tag" style="margin:0;font-size:0.65rem;letter-spacing:0.2em;">// ZION BROADCAST TELEMETRY // REALITY RANKINGS</div>
           <h2 style="font-family:var(--font-display);font-size:1.3rem;color:var(--cyan);margin:3px 0 0 0;letter-spacing:0.08em;display:flex;align-items:center;gap:8px;">
-            <span>🏆 MAINFRAME OPERATIVE LEADERBOARD</span>
-            <span style="font-size:0.68rem;font-family:var(--font-mono);background:rgba(124,255,61,0.12);color:var(--lime);border:1px solid var(--lime);padding:2px 7px;border-radius:2px;">SCALE: 0 - 25 PTS</span>
+            <span>🏆 ZION MAINFRAME // OPERATIVE LEADERBOARD</span>
+            <span style="font-size:0.68rem;font-family:var(--font-mono);background:rgba(0,255,65,0.12);color:var(--lime);border:1px solid var(--lime);padding:2px 7px;border-radius:2px;">SCALE: 0 - 25 PTS</span>
           </h2>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
@@ -915,7 +915,7 @@
       <!-- Table Scrollable Area -->
       <div style="flex:1;overflow-y:auto;padding:14px 22px;">
         <div id="leaderboard-loading" style="text-align:center;padding:45px 20px;font-family:var(--font-mono);color:var(--cyan);font-size:0.85rem;">
-          [ QUERYING CLUSTER GLITCH-49720 FIRESTORE TELEMETRY... ]
+          [ QUERYING NEBUCHADNEZZAR & FIRESTORE TELEMETRY... ]
         </div>
         <table id="leaderboard-table" style="display:none;width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:0.78rem;text-align:left;">
           <thead>
@@ -931,12 +931,12 @@
           <tbody id="leaderboard-body"></tbody>
         </table>
         <div id="leaderboard-empty" style="display:none;text-align:center;padding:45px 20px;font-family:var(--font-mono);color:var(--text-dim);font-size:0.85rem;">
-          NO OPERATIVE SCORES LOGGED YET. PLAY THE GAME TO BE #1!
+          NO OPERATIVE SCORES LOGGED YET. ENTER THE MATRIX TO BE #1!
         </div>
       </div>
 
       <!-- Current User Footer Card -->
-      <div id="leaderboard-user-banner" style="padding:10px 22px;background:rgba(0,229,255,0.06);border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.75rem;">
+      <div id="leaderboard-user-banner" style="padding:10px 22px;background:rgba(0,255,65,0.06);border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:0.75rem;">
         <span style="color:var(--cyan);" id="lb-current-user-info">OPERATIVE: NOT LOGGED IN</span>
         <span style="color:var(--lime);font-weight:700;" id="lb-current-user-score">YOUR BEST: 0 / 25 PTS</span>
       </div>
@@ -950,7 +950,7 @@
       <span id="mini-terminal-toggle-btn" style="font-size:0.7rem;color:var(--text-dim);">▲ EXPAND</span>
     </div>
     <div id="mini-terminal-body">
-      <div class="terminal-line out">> GLITCH MATRIX DIAGNOSTIC TERMINAL READY.</div>
+      <div class="terminal-line out">> GLITCH // THE MATRIX TERMINAL INITIALIZED.</div>
       <div class="terminal-line">> Type "help" for classified operative commands.</div>
     </div>
     <div id="mini-terminal-input-row">
@@ -1343,7 +1343,7 @@
       if (!canvas || typeof THREE === 'undefined') return;
 
       scene = new THREE.Scene();
-      scene.fog = new THREE.FogExp2(0x05070a, 0.035);
+      scene.fog = new THREE.FogExp2(0x020603, 0.035);
 
       camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
       camera.position.z = 7;
@@ -1355,10 +1355,10 @@
       // Torus Knot Geometry (Cyber Core)
       const knotGeom = new THREE.TorusKnotGeometry(2.0, 0.55, 120, 32, 2, 3);
       const knotMat = new THREE.MeshBasicMaterial({
-        color: 0x00e5ff,
+        color: 0x00ff41,
         wireframe: true,
         transparent: true,
-        opacity: 0.16
+        opacity: 0.22
       });
       torusMesh = new THREE.Mesh(knotGeom, knotMat);
       scene.add(torusMesh);
@@ -1374,10 +1374,10 @@
       }
       pGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       const pMat = new THREE.PointsMaterial({
-        color: 0x00e5ff,
+        color: 0x00ff66,
         size: 0.14,
         transparent: true,
-        opacity: 0.5
+        opacity: 0.6
       });
       particleSystem = new THREE.Points(pGeom, pMat);
       scene.add(particleSystem);
@@ -1416,11 +1416,11 @@
         if (glitchSpike > 0) {
           torusMesh.position.x = (Math.random() - 0.5) * glitchSpike * 0.4;
           torusMesh.position.y = (Math.random() - 0.5) * glitchSpike * 0.4;
-          torusMesh.material.color.setHex(Math.random() < 0.5 ? 0xff2d95 : 0xff3b30);
+          torusMesh.material.color.setHex(Math.random() < 0.5 ? 0xff0033 : 0xffffff);
           glitchSpike -= 0.05;
           if (glitchSpike <= 0) {
             torusMesh.position.set(0, 0, 0);
-            torusMesh.material.color.setHex(0x00e5ff);
+            torusMesh.material.color.setHex(0x00ff41);
           }
         }
       }
@@ -2255,13 +2255,14 @@
       if (!term) return;
       term.innerHTML = '';
       const lines = (window.CONFIG && window.CONFIG.BOOT_LINES) || [
-        "> Initializing GLITCH_MATRIX v2.4.7...",
-        "> Loading kernel modules... [OK]",
-        "> Scanning memory banks... CORRUPTION DETECTED",
-        "> 7 modules compromised. Initiating repair protocol...",
-        "> Assigning operative credentials...",
-        "> Neural interface established.",
-        "> JACK IN SUCCESSFUL. BEGIN REPAIR."
+        "> WAKE UP, NEO...",
+        "> The Matrix has you...",
+        "> Follow the white rabbit...",
+        "> Knock, knock, Operative.",
+        "> Loading Nebuchadnezzar broadcast kernel... [OK]",
+        "> 7 reality sectors corrupted by Sentinel algorithms...",
+        "> Red pill engaged. Neural link locked.",
+        "> JACK IN SUCCESSFUL. ENTERING THE MATRIX."
       ];
 
       let idx = 0;

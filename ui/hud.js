@@ -72,7 +72,7 @@ function initWaveform() {
   function renderWave() {
     if (waveformCtx) {
       waveformCtx.clearRect(0, 0, 60, 20);
-      waveformCtx.fillStyle = 'rgba(0, 229, 255, 0.75)';
+      waveformCtx.fillStyle = 'rgba(0, 255, 65, 0.85)';
 
       const bars = 10;
       const barWidth = 4;

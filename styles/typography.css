@@ -1,76 +1,84 @@
 /* ═══════════════════════════════════════════════════════════════
-   GLITCH MATRIX — DESIGN TOKENS, TYPOGRAPHY & LIGHTING MOODS
+   GLITCH MATRIX — MATRIX MOVIE THEME & DESIGN TOKENS
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Strict 12-Color Cyberpunk Palette */
-  --bg-void: #05070a;
-  --bg-dark: #0a0e17;
-  --bg-card: #121826;
-  --bg-elevated: #1a2332;
-  --cyan: #00e5ff;
-  --magenta: #ff2d95;
-  --lime: #7cff3d;
-  --amber: #ffb800;
-  --red: #ff3b30;
-  --text: #e6f1ff;
-  --text-dim: #5a6b85;
-  --text-mute: #2a3444;
+  /* Matrix Movie Phosphor Palette */
+  --bg-void: #020502;
+  --bg-dark: #040c05;
+  --bg-card: rgba(6, 16, 8, 0.88);
+  --bg-elevated: rgba(10, 26, 14, 0.94);
 
-  --line: rgba(90, 107, 133, 0.25);
-  --line-bright: rgba(0, 229, 255, 0.35);
+  --matrix-green: #00ff41;
+  --matrix-bright: #d4ffd4;
+  --matrix-emerald: #00ff66;
+  --matrix-dark: #003b00;
+  --matrix-glow: rgba(0, 255, 65, 0.38);
 
-  --font-display: 'Orbitron', -apple-system, sans-serif;
+  --cyan: #00ff66;
+  --magenta: #00e588;
+  --lime: #00ff41;
+  --amber: #e6b800;
+  --red: #ff0033;
+  
+  --text: #d8ffd8;
+  --text-dim: #609868;
+  --text-mute: #204426;
+
+  --line: rgba(0, 255, 65, 0.24);
+  --line-bright: rgba(0, 255, 65, 0.55);
+
+  --font-display: 'Orbitron', 'JetBrains Mono', -apple-system, sans-serif;
   --font-sans: 'Space Grotesk', -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', 'Courier New', monospace;
 
   /* Current Dynamic Mood Glow */
-  --mood-primary: var(--cyan);
-  --mood-secondary: var(--magenta);
-  --mood-bg-glow: rgba(0, 229, 255, 0.05);
+  --mood-primary: var(--matrix-green);
+  --mood-secondary: var(--matrix-emerald);
+  --mood-bg-glow: rgba(0, 255, 65, 0.08);
 }
 
-/* 7 Distinct Module Lighting Moods */
+/* 7 Dynamic Module Lighting Moods (Subtle Matrix Nuances) */
 body[data-mood="interrogation"] {
-  --mood-primary: #00e5ff;
-  --mood-secondary: #ff2d95;
-  --mood-bg-glow: rgba(0, 229, 255, 0.07);
+  --mood-primary: #00ff41;
+  --mood-secondary: #00ff66;
+  --mood-bg-glow: rgba(0, 255, 65, 0.08);
 }
 
 body[data-mood="arcade"] {
-  --mood-primary: #ff2d95;
-  --mood-secondary: #9d4edd;
-  --mood-bg-glow: rgba(255, 45, 149, 0.08);
+  --mood-primary: #00ff88;
+  --mood-secondary: #22c55e;
+  --mood-bg-glow: rgba(0, 255, 136, 0.08);
 }
 
 body[data-mood="mechanical"] {
-  --mood-primary: #ffb800;
-  --mood-secondary: #ff7b00;
-  --mood-bg-glow: rgba(255, 184, 0, 0.07);
+  --mood-primary: #e6b800;
+  --mood-secondary: #00ff41;
+  --mood-bg-glow: rgba(230, 184, 0, 0.08);
 }
 
 body[data-mood="pressure"] {
-  --mood-primary: #ff3b30;
-  --mood-secondary: #ffb800;
-  --mood-bg-glow: rgba(255, 59, 48, 0.09);
+  --mood-primary: #ff0033;
+  --mood-secondary: #00ff41;
+  --mood-bg-glow: rgba(255, 0, 51, 0.1);
 }
 
 body[data-mood="vault"] {
-  --mood-primary: #7cff3d;
-  --mood-secondary: #00e5ff;
-  --mood-bg-glow: rgba(124, 255, 61, 0.07);
+  --mood-primary: #00ff41;
+  --mood-secondary: #00ffaa;
+  --mood-bg-glow: rgba(0, 255, 65, 0.09);
 }
 
 body[data-mood="circuit"] {
-  --mood-primary: #00d2ff;
-  --mood-secondary: #3b82f6;
-  --mood-bg-glow: rgba(0, 210, 255, 0.07);
+  --mood-primary: #00ff66;
+  --mood-secondary: #10b981;
+  --mood-bg-glow: rgba(0, 255, 102, 0.08);
 }
 
 body[data-mood="cathedral"] {
-  --mood-primary: #7cff3d;
-  --mood-secondary: #00e5ff;
-  --mood-bg-glow: rgba(10, 22, 35, 0.4);
+  --mood-primary: #00ff41;
+  --mood-secondary: #d4ffd4;
+  --mood-bg-glow: rgba(0, 255, 65, 0.12);
 }
 
 * {
@@ -147,8 +155,8 @@ h1, h2, h3, h4 {
 
 .btn-cyber:hover {
   background: var(--bg-elevated);
-  border-color: var(--cyan);
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.35);
+  border-color: var(--matrix-green);
+  box-shadow: 0 0 18px rgba(0, 255, 65, 0.45);
   transform: translateY(-1px);
 }
 
@@ -157,37 +165,39 @@ h1, h2, h3, h4 {
 }
 
 .btn-cyber.primary {
-  background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(255, 45, 149, 0.15));
-  border-color: var(--cyan);
-  color: #fff;
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.18), rgba(0, 80, 25, 0.4));
+  border-color: var(--matrix-green);
+  color: var(--matrix-bright);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.28);
 }
 
 .btn-cyber.primary:hover {
-  background: linear-gradient(135deg, rgba(0, 229, 255, 0.3), rgba(255, 45, 149, 0.3));
-  box-shadow: 0 0 22px rgba(0, 229, 255, 0.5);
+  background: linear-gradient(135deg, rgba(0, 255, 65, 0.35), rgba(0, 120, 40, 0.6));
+  border-color: var(--matrix-bright);
+  color: #fff;
+  box-shadow: 0 0 25px rgba(0, 255, 65, 0.65);
 }
 
 .btn-cyber.danger {
-  border-color: rgba(255, 59, 48, 0.4);
-  color: #ff8882;
+  border-color: rgba(255, 0, 51, 0.5);
+  color: #ff8888;
 }
 
 .btn-cyber.danger:hover {
-  background: rgba(255, 59, 48, 0.15);
+  background: rgba(255, 0, 51, 0.2);
   border-color: var(--red);
-  box-shadow: 0 0 14px rgba(255, 59, 48, 0.4);
+  box-shadow: 0 0 18px rgba(255, 0, 51, 0.5);
 }
 
 .btn-cyber.success {
-  border-color: rgba(124, 255, 61, 0.4);
-  color: #bbf78d;
+  border-color: rgba(0, 255, 65, 0.5);
+  color: #c0ffc0;
 }
 
 .btn-cyber.success:hover {
-  background: rgba(124, 255, 61, 0.15);
-  border-color: var(--lime);
-  box-shadow: 0 0 14px rgba(124, 255, 61, 0.4);
+  background: rgba(0, 255, 65, 0.2);
+  border-color: var(--matrix-green);
+  box-shadow: 0 0 18px rgba(0, 255, 65, 0.5);
 }
 
 /* Option Chips (PCB / IC Pins style) */
