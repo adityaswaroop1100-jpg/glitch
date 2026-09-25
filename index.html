@@ -695,7 +695,7 @@
           </div>
           <div style="background:var(--bg-card);border:1px solid var(--line);padding:14px;border-radius:3px;">
             <div class="hud-label">FAILURE TOLERANCE</div>
-            <div style="color:var(--amber);font-family:var(--font-mono);font-weight:700;font-size:0.95rem;margin-top:4px;">3 HARDWARE FAULTS</div>
+            <div style="color:var(--amber);font-family:var(--font-mono);font-weight:700;font-size:0.95rem;margin-top:4px;">FAULT ADVISORIES</div>
           </div>
         </div>
 
@@ -1763,10 +1763,11 @@
       // 2. Normal Fault
       G.combo = 0;
       G.totalAnswered++;
+      G.faultsCount = (G.faultsCount || 0) + 1;
       if (G.lives > 0) G.lives--;
 
       document.body.classList.remove('hyperdrive-active');
-      if (torusMesh) torusMesh.material.color.setHex(0x00e5ff);
+      if (torusMesh) torusMesh.material.color.setHex(0x00ff41);
 
       if (window.AudioGraph) {
         window.AudioGraph.playWrong();
@@ -1777,8 +1778,12 @@
       updateHUD();
       updateTacticalDock();
 
-      if (G.lives <= 0) {
-        setTimeout(triggerGameOver, 600);
+      // Do NOT end the game on 3 wrong answers — issue a Matrix warning advisory and keep playing!
+      if (G.faultsCount >= 3 || G.lives === 0) {
+        showFeedback(`⚠ WARNING: HARDWARE FAULT #${G.faultsCount}! PROCEED WITH CAUTION`, false);
+        if (window.AudioGraph) window.AudioGraph.playGlitch();
+      } else {
+        showFeedback(`⚠ FAULT DETECTED // INTEGRITY DEGRADED (${G.lives} SHIELDS LEFT)`, false);
       }
     }
     window.onWrongAnswer = onWrongAnswer;
@@ -1789,7 +1794,6 @@
       if (G.oddTimer) { clearInterval(G.oddTimer); G.oddTimer = null; }
       if (G.speedInterval) clearInterval(G.speedInterval);
       onWrongAnswer();
-      showFeedback("SKIPPED — SYSTEM PENALTY", false);
       setTimeout(advanceQuestion, 1200);
     }
     window.skipQuestion = skipQuestion;
@@ -1915,7 +1919,6 @@
         setTimeout(advanceQuestion, 1200);
       } else {
         onWrongAnswer();
-        showFeedback("INCORRECT — ADVANCING TO NEXT", false);
         document.querySelectorAll('.circuit-chip-btn').forEach(b => {
           if (b.textContent.includes(answer)) b.classList.add('success');
         });
