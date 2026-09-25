@@ -601,10 +601,10 @@
         </p>
 
         <!-- Login Form -->
-        <form id="operative-login-form" onsubmit="handleOperativeLogin(event)" style="display:flex;flex-direction:column;gap:13px;text-align:left;">
+        <form id="operative-login-form" autocomplete="off" onsubmit="handleOperativeLogin(event)" style="display:flex;flex-direction:column;gap:13px;text-align:left;">
           <div>
             <label class="hud-label" style="display:block;margin-bottom:4px;">PARTICIPANT NAME *</label>
-            <input type="text" id="login-name" required placeholder="e.g. Thomas Anderson / Neo" class="login-cyber-input" autocomplete="name" />
+            <input type="text" id="login-name" required placeholder="e.g. Thomas Anderson / Neo" class="login-cyber-input" autocomplete="off" />
           </div>
 
           <div>
@@ -614,12 +614,12 @@
 
           <div>
             <label class="hud-label" style="display:block;margin-bottom:4px;">GMAIL / EMAIL ADDRESS *</label>
-            <input type="email" id="login-email" required placeholder="e.g. operative@zion.net" class="login-cyber-input" autocomplete="email" />
+            <input type="email" id="login-email" required placeholder="e.g. operative@zion.net" class="login-cyber-input" autocomplete="off" />
           </div>
 
           <div>
             <label class="hud-label" style="display:block;margin-bottom:4px;">CONTACT NUMBER *</label>
-            <input type="tel" id="login-phone" required placeholder="e.g. 9876543210" pattern="[0-9]{10}" maxlength="10" class="login-cyber-input" autocomplete="tel" />
+            <input type="tel" id="login-phone" required placeholder="e.g. 9876543210" pattern="[0-9]{10}" maxlength="10" class="login-cyber-input" autocomplete="off" />
           </div>
 
           <div id="login-error-msg" style="display:none;font-family:var(--font-mono);font-size:0.75rem;color:var(--red);background:rgba(255,59,48,0.12);border:1px solid var(--red);padding:8px 12px;border-radius:2px;"></div>
@@ -2447,20 +2447,19 @@
         window.FX.startAmbientStream();
       }
 
-      // Check saved operative login
-      const rawUser = localStorage.getItem('glitchmatrix_user');
-      if (rawUser) {
-        try {
-          const user = JSON.parse(rawUser);
-          if (user.reg_number && $('hud-session-code')) {
-            $('hud-session-code').textContent = user.reg_number;
-          }
-          if ($('login-name')) $('login-name').value = user.name || '';
-          if ($('login-reg')) $('login-reg').value = user.reg_number || '';
-          if ($('login-email')) $('login-email').value = user.email || '';
-          if ($('login-phone')) $('login-phone').value = user.phone || '';
-        } catch (e) {}
+      // Ensure registration form fields are completely empty on every page refresh & pageshow
+      function clearLoginForm() {
+        localStorage.removeItem('glitchmatrix_user');
+        window.CURRENT_OPERATIVE = null;
+        const form = $('operative-login-form');
+        if (form) form.reset();
+        ['login-name', 'login-reg', 'login-email', 'login-phone'].forEach(id => {
+          const el = $(id);
+          if (el) el.value = '';
+        });
       }
+      clearLoginForm();
+      window.addEventListener('pageshow', clearLoginForm);
 
       const best = localStorage.getItem('glitchmatrix_best') || '0';
       const bEl = $('best-score-display');
