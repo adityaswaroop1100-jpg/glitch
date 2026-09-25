@@ -750,13 +750,6 @@
           <div class="corner-bracket bracket-bl"></div>
           <div class="corner-bracket bracket-br"></div>
           
-          <!-- Rapid Decrypt Bonus Meter -->
-          <div id="speed-decrypt-container">
-            <span class="speed-decrypt-label">⚡ RAPID DECRYPT</span>
-            <div id="speed-decrypt-track"><div id="speed-decrypt-fill"></div></div>
-            <span id="speed-bonus-badge" style="font-family:var(--font-mono);font-size:0.68rem;color:var(--lime);font-weight:700;">+150 PTS</span>
-          </div>
-
           <div id="identified-stamp" class="stamp-container">RESTORED</div>
           <div id="game-content"></div>
 
@@ -1845,37 +1838,9 @@
       renderQuestion();
     }
 
-    function startSpeedRushMeter() {
-      if (G.speedInterval) clearInterval(G.speedInterval);
-      G.speedBonusEligible = true;
-      G.questionStartTime = Date.now();
-      const fill = $('speed-decrypt-fill');
-      const badge = $('speed-bonus-badge');
-      if (badge) {
-        badge.textContent = '+150 PTS';
-        badge.style.color = 'var(--lime)';
-      }
-      if (fill) fill.style.width = '100%';
-
-      const duration = 5000;
-      G.speedInterval = setInterval(() => {
-        const elapsed = Date.now() - G.questionStartTime;
-        const remainingPct = Math.max(0, 100 - (elapsed / duration) * 100);
-        if (fill) fill.style.width = remainingPct + '%';
-
-        if (elapsed >= duration) {
-          clearInterval(G.speedInterval);
-          G.speedBonusEligible = false;
-          if (badge) {
-            badge.textContent = 'EXPIRED';
-            badge.style.color = 'var(--text-dim)';
-          }
-        }
-      }, 50);
-    }
-
     function renderQuestion() {
       G.answerLocked = false;
+      G.questionStartTime = Date.now();
       const modules = window.MODULES || (typeof MODULES !== 'undefined' ? MODULES : []);
       const mod = modules[G.currentModule];
       const q = getCurrentQuestion();
@@ -1887,7 +1852,6 @@
         window.RENDERERS[mod.type](mod, q, content);
       }
 
-      startSpeedRushMeter();
       updateHUD();
       updateTacticalDock();
     }
