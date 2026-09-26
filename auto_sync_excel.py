@@ -86,11 +86,30 @@ def extract_val(v):
         return v["booleanValue"]
     return str(v)
 
+def load_existing_round2_marks():
+    existing = {}
+    csv_path = os.path.join(DESKTOP_DIR, "glitch_matrix_registrations.csv")
+    if os.path.exists(csv_path):
+        try:
+            old_df = pd.read_csv(csv_path)
+            if "Round 2 Marks" in old_df.columns and "Registration Number" in old_df.columns:
+                for _, row in old_df.iterrows():
+                    reg = str(row["Registration Number"]).strip().upper()
+                    val = row["Round 2 Marks"]
+                    if pd.notna(val) and str(val).strip() != "":
+                        existing[reg] = str(val).strip()
+        except Exception:
+            pass
+    return existing
+
 def generate_sheets(docs):
     global last_data_hash
     current_hash = hashlib.md5(json.dumps(docs, sort_keys=True).encode()).hexdigest()
     if current_hash == last_data_hash:
         return False  # No change
+
+    # Load any previously saved Round 2 marks so user input is never lost on sync
+    existing_round2 = load_existing_round2_marks()
 
     records = []
     for d in docs:
@@ -103,6 +122,7 @@ def generate_sheets(docs):
 
     rows = []
     for idx, r in enumerate(records, 1):
+        clean_reg = str(r.get("reg_number", "")).strip().upper()
         aaruush = r.get("aaruush_id", "")
         if not aaruush or str(aaruush).strip().upper() in ["N/A", "NA", ""]:
             aaruush_display = "N/A"
@@ -112,11 +132,12 @@ def generate_sheets(docs):
         rows.append({
             "Rank": idx,
             "Name": str(r.get("name", "")).strip(),
-            "Registration Number": str(r.get("reg_number", "")).strip().upper(),
+            "Registration Number": clean_reg,
             "Aaruush ID": aaruush_display,
             "Email Address": str(r.get("email", "")).strip().lower(),
             "Phone Number": str(r.get("phone", "")).strip(),
-            "Total Score (Max 25)": int(r.get("score", 0)),
+            "Round 1 Score (Max 25)": int(r.get("score", 0)),
+            "Round 2 Marks": existing_round2.get(clean_reg, ""),  # Empty by default for manual entry
             "Question Score (Max 21)": int(r.get("question_score", 0)),
             "Time Bonus (Max 4)": int(r.get("time_bonus", 0)),
             "Modules Cleared (Max 7)": int(r.get("modules_cleared", 0)),
@@ -197,12 +218,44 @@ def generate_sheets(docs):
             "font_color": "#007a5a"
         })
 
+        # Special highlighted styling for Round 2 Marks (clean editable cell)
+        round2_header_format = workbook.add_format({
+            "bold": True,
+            "text_wrap": False,
+            "valign": "vcenter",
+            "align": "center",
+            "fg_color": "#f59e0b",
+            "font_color": "#000000",
+            "border": 1,
+            "border_color": "#d97706",
+            "font_name": "Arial",
+            "font_size": 11
+        })
+
+        round2_cell_format = workbook.add_format({
+            "font_name": "Arial",
+            "font_size": 10,
+            "valign": "vcenter",
+            "align": "center",
+            "border": 1,
+            "border_color": "#fcd34d",
+            "fg_color": "#fffbeb",
+            "bold": True,
+            "font_color": "#92400e"
+        })
+
         for col_num, col_name in enumerate(df.columns):
-            worksheet.write(0, col_num, col_name, header_format)
+            if col_name == "Round 2 Marks":
+                worksheet.write(0, col_num, col_name, round2_header_format)
+            else:
+                worksheet.write(0, col_num, col_name, header_format)
+
             max_len = max(df[col_name].astype(str).map(len).max(), len(col_name)) + 4
 
             if col_name == "Rank":
                 worksheet.set_column(col_num, col_num, max_len, rank_format)
+            elif col_name == "Round 2 Marks":
+                worksheet.set_column(col_num, col_num, max_len + 2, round2_cell_format)
             elif "Score" in col_name:
                 worksheet.set_column(col_num, col_num, max_len, score_format)
             elif col_name in ["Registration Number", "Aaruush ID", "Phone Number", "Modules Cleared (Max 7)", "Time Taken (sec)", "Time Remaining (sec)", "Status"]:
@@ -221,7 +274,7 @@ def generate_sheets(docs):
 
     last_data_hash = current_hash
     now_str = datetime.now().strftime("%H:%M:%S")
-    print(f"[{now_str}] ✓ UPDATED Desktop Excel & CSV with {len(records)} participants!")
+    print(f"[{now_str}] ✓ UPDATED Desktop Excel & CSV with {len(records)} participants (Round 2 Marks column ready)!")
     return True
 
 def main():
