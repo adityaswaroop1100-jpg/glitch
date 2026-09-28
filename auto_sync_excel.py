@@ -86,21 +86,36 @@ def extract_val(v):
         return v["booleanValue"]
     return str(v)
 
-def load_existing_round2_marks():
-    existing = {}
+def load_existing_marks():
+    round2 = {}
+    round3 = {}
     csv_path = os.path.join(DESKTOP_DIR, "glitch_matrix_registrations.csv")
     if os.path.exists(csv_path):
         try:
             old_df = pd.read_csv(csv_path)
-            if "Round 2 Marks" in old_df.columns and "Registration Number" in old_df.columns:
-                for _, row in old_df.iterrows():
-                    reg = str(row["Registration Number"]).strip().upper()
-                    val = row["Round 2 Marks"]
-                    if pd.notna(val) and str(val).strip() != "":
-                        existing[reg] = str(val).strip()
+            for _, row in old_df.iterrows():
+                reg = str(row.get("Registration Number", "")).strip().upper()
+                email = str(row.get("Email Address", "")).strip().lower()
+
+                if "Round 2 Marks" in old_df.columns:
+                    val2 = row["Round 2 Marks"]
+                    if pd.notna(val2) and str(val2).strip() != "":
+                        round2[reg] = str(val2).strip()
+                        if email: round2[email] = str(val2).strip()
+
+                if "Round 3 Marks" in old_df.columns:
+                    val3 = row["Round 3 Marks"]
+                    if pd.notna(val3) and str(val3).strip() != "":
+                        round3[reg] = str(val3).strip()
+                        if email: round3[email] = str(val3).strip()
+                elif "Round 3" in old_df.columns:
+                    val3 = row["Round 3"]
+                    if pd.notna(val3) and str(val3).strip() != "":
+                        round3[reg] = str(val3).strip()
+                        if email: round3[email] = str(val3).strip()
         except Exception:
             pass
-    return existing
+    return round2, round3
 
 def generate_sheets(docs):
     global last_data_hash
@@ -108,8 +123,8 @@ def generate_sheets(docs):
     if current_hash == last_data_hash:
         return False  # No change
 
-    # Load any previously saved Round 2 marks so user input is never lost on sync
-    existing_round2 = load_existing_round2_marks()
+    # Load any previously saved Round 2 and Round 3 marks so manual input is never lost on sync
+    existing_round2, existing_round3 = load_existing_marks()
 
     records = []
     for d in docs:
@@ -117,6 +132,7 @@ def generate_sheets(docs):
         row = {k: extract_val(v) for k, v in fields.items()}
         name_clean = str(row.get("name", "")).strip().lower()
         email_clean = str(row.get("email", "")).strip().lower()
+        # Filter out admin test accounts
         if name_clean == "aditya swaroop" or email_clean == "adityaswaroop1100@gmail.com":
             continue
         records.append(row)
@@ -127,29 +143,24 @@ def generate_sheets(docs):
     rows = []
     for idx, r in enumerate(records, 1):
         clean_reg = str(r.get("reg_number", "")).strip().upper()
+        clean_email = str(r.get("email", "")).strip().lower()
         aaruush = r.get("aaruush_id", "")
         if not aaruush or str(aaruush).strip().upper() in ["N/A", "NA", ""]:
             aaruush_display = "N/A"
         else:
             aaruush_display = str(aaruush).strip()
 
+        # Clean competitive scoring layout: Rank, Name, Reg, Aaruush, Email, Phone, Round 1, Round 2, Round 3
         rows.append({
             "Rank": idx,
             "Name": str(r.get("name", "")).strip(),
             "Registration Number": clean_reg,
             "Aaruush ID": aaruush_display,
-            "Email Address": str(r.get("email", "")).strip().lower(),
+            "Email Address": clean_email,
             "Phone Number": str(r.get("phone", "")).strip(),
             "Round 1 Score (Max 25)": int(r.get("score", 0)),
-            "Round 2 Marks": existing_round2.get(clean_reg, ""),  # Empty by default for manual entry
-            "Question Score (Max 21)": int(r.get("question_score", 0)),
-            "Time Bonus (Max 4)": int(r.get("time_bonus", 0)),
-            "Modules Cleared (Max 7)": int(r.get("modules_cleared", 0)),
-            "Time Taken (sec)": int(r.get("time_taken", 0)),
-            "Time Remaining (sec)": int(r.get("time_left", 0)),
-            "Status": str(r.get("status", "LOGGED_IN")),
-            "Registered At": str(r.get("created_at", "")),
-            "Completed At": str(r.get("completed_at", ""))
+            "Round 2 Marks": existing_round2.get(clean_email, existing_round2.get(clean_reg, "")),
+            "Round 3 Marks": existing_round3.get(clean_email, existing_round3.get(clean_reg, ""))
         })
 
     df = pd.DataFrame(rows)
@@ -222,8 +233,8 @@ def generate_sheets(docs):
             "font_color": "#007a5a"
         })
 
-        # Special highlighted styling for Round 2 Marks (clean editable cell)
-        round2_header_format = workbook.add_format({
+        # Special highlighted styling for Round 2 and Round 3 Marks (clean editable cells)
+        round_manual_header_format = workbook.add_format({
             "bold": True,
             "text_wrap": False,
             "valign": "vcenter",
@@ -236,7 +247,7 @@ def generate_sheets(docs):
             "font_size": 11
         })
 
-        round2_cell_format = workbook.add_format({
+        round_manual_cell_format = workbook.add_format({
             "font_name": "Arial",
             "font_size": 10,
             "valign": "vcenter",
@@ -249,8 +260,8 @@ def generate_sheets(docs):
         })
 
         for col_num, col_name in enumerate(df.columns):
-            if col_name == "Round 2 Marks":
-                worksheet.write(0, col_num, col_name, round2_header_format)
+            if col_name in ["Round 2 Marks", "Round 3 Marks"]:
+                worksheet.write(0, col_num, col_name, round_manual_header_format)
             else:
                 worksheet.write(0, col_num, col_name, header_format)
 
@@ -258,11 +269,11 @@ def generate_sheets(docs):
 
             if col_name == "Rank":
                 worksheet.set_column(col_num, col_num, max_len, rank_format)
-            elif col_name == "Round 2 Marks":
-                worksheet.set_column(col_num, col_num, max_len + 2, round2_cell_format)
+            elif col_name in ["Round 2 Marks", "Round 3 Marks"]:
+                worksheet.set_column(col_num, col_num, max_len + 3, round_manual_cell_format)
             elif "Score" in col_name:
                 worksheet.set_column(col_num, col_num, max_len, score_format)
-            elif col_name in ["Registration Number", "Aaruush ID", "Phone Number", "Modules Cleared (Max 7)", "Time Taken (sec)", "Time Remaining (sec)", "Status"]:
+            elif col_name in ["Registration Number", "Aaruush ID", "Phone Number"]:
                 worksheet.set_column(col_num, col_num, max_len, center_format)
             else:
                 worksheet.set_column(col_num, col_num, max_len, data_format)
@@ -278,7 +289,7 @@ def generate_sheets(docs):
 
     last_data_hash = current_hash
     now_str = datetime.now().strftime("%H:%M:%S")
-    print(f"[{now_str}] ✓ UPDATED Desktop Excel & CSV with {len(records)} participants (Round 2 Marks column ready)!")
+    print(f"[{now_str}] ✓ UPDATED Desktop Excel & CSV with {len(records)} participants (Round 1, Round 2 & Round 3 layout ready)!")
     return True
 
 def main():
