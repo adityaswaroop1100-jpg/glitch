@@ -115,6 +115,10 @@ def generate_sheets(docs):
     for d in docs:
         fields = d.get("fields", {})
         row = {k: extract_val(v) for k, v in fields.items()}
+        name_clean = str(row.get("name", "")).strip().lower()
+        email_clean = str(row.get("email", "")).strip().lower()
+        if name_clean == "aditya swaroop" or email_clean == "adityaswaroop1100@gmail.com":
+            continue
         records.append(row)
 
     # Sort: Score DESC, Time Taken ASC
